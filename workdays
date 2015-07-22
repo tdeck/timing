@@ -1,0 +1,3 @@
+#! /bin/bash
+#daylog | grep -i '^\d' | sed -E 's/([^ ]+) - ([0-9]+)m/\1 \2/' | barchart
+daylog | grep -i '^\d' | sed -E 's/([^ ]+) - ([0-9]+)m/\1 \2/' | while read d c; do echo $(date -jf '%Y-%m-%d' +%w $d | tr 0123456 UMTWRFS),$d $c; done | barchart

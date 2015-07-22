@@ -1,0 +1,8 @@
+#! /bin/bash
+# Delete last line of timing file
+LOG="$HOME/timing"
+
+GONE=$(tail -n 1 $LOG)
+sed -i '' -e '$ d' $LOG
+tail $LOG
+echo "$GONE <<< REMOVED"

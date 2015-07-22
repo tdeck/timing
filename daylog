@@ -1,0 +1,126 @@
+#! /usr/bin/perl
+
+use warnings;
+use strict;
+use Data::Dumper;
+$Data::Dumper::Terse = 1;
+
+my $flag = shift || '';
+
+
+my @lt = localtime;
+my $nowAt = $lt[2] * 60 + $lt[1];
+
+$lt[5] += 1900;
+$lt[4]++;
+my $todayIs = sprintf("%04d-%02d-%02d", @lt[5,4,3]);
+
+my @logs = ();
+my $date = 0;
+my $times = {};
+my $finished = {};
+my $task = '';
+my $start_hr = -1;
+my $start_min = 0;
+
+open INFILE, $ENV{"HOME"} . '/timing';
+while (my $line = <INFILE>) {
+    chomp $line;
+    if ($line =~ /^#/) {
+        # Do nothing
+    } elsif ($line =~ /^= (.*)$/) {
+        if ($date) {
+            push @logs, {
+                'date' => $date,
+                'times' => $times,
+                'finished' => $finished,
+            };
+        }
+        $date = $1;
+        $times = {};
+        $finished = {};
+        $start_hr = -1;
+        $start_min = 0;
+    } elsif ($line =~ /^(\d+):(\d+) (.+)$/) {
+        my $hour = $1;
+        my $min = $2;
+        my $action = $3;
+        if ($action eq 'b' || $action eq 'd') {
+            # Sanity check
+            if ($start_hr == -1) {
+                die("Break without start at: $line");
+            } else {
+                # First entry for this task
+                if (not exists $times->{$task}) {
+                    $times->{$task} = 0;
+                }
+
+                $times->{$task} += 
+                    ($hour * 60 + $min) - 
+                    ($start_hr * 60 + $start_min);
+                
+                if ($action eq 'd') {
+                    $finished->{$task} = 1;
+                }
+            }
+            $start_hr = -1;
+            $start_min = 0;
+        } else {
+            $task = $action if $action ne 'c';
+            $start_hr = $hour;
+            $start_min = $min;
+        }
+    } else {
+        die "Unrecognized entry '$line'";
+    }
+}
+if ($date) {
+    push @logs, {
+        'date' => $date,
+        'times' => $times,
+        'finished' => $finished,
+    };
+}
+
+# Add an empty entry for today if we haven't done anything yet
+if ($date ne $todayIs) {
+    push @logs, {
+        'date' => $todayIs,
+        'times' => {},
+        'finished' => {},
+    };
+}
+
+
+close INFILE;
+
+if ($flag eq '-d') {
+    print Dumper(\@logs);
+
+    exit 0;
+}
+
+
+for (@logs) {
+    print daylog($_);
+}
+
+# Print the number of minutes left today
+my $minsLeft =  ((60 * 24) - $nowAt) ;
+print "\n\t$minsLeft minutes left today.\n";
+
+sub daylog {
+    my $input = $_[0];
+    my ($times, $date) = ($input->{'times'}, $input->{'date'});
+    my $total = 0;
+    my $result = '';
+    for (keys %$times) {
+        my $mins = $times->{$_};
+        $result .= "\t" . $mins . "m\t $_\n";
+        if ($_ !~ /^\*/) {
+            $total += $mins;
+        }
+    }
+    $result = "$date - $total" . "m\n$result";
+    return $result;
+}

@@ -1,0 +1,6 @@
+#! /bin/bash
+
+unset GREP_OPTIONS
+completed=`daylog | ggrep -Po '(?<= - )([0-9])+' | tail -n 1`
+todo=$(expr $TIMING_GOAL_MIN - $completed)
+date -r $(expr $(date +%s) \+ 60 \* $todo) +'%H:%M'

@@ -1,0 +1,8 @@
+#! /bin/bash
+
+unset GREP_OPTIONS
+completed=`daylog | ggrep -Po '(?<= - )([0-9])+' | tail -n 1`
+todo=$(expr $TIMING_GOAL_MIN - $completed)
+time_left=$(expr $(($(gdate -d "today $TIMING_DAY_END" +%s) - $(gdate +%s))) / 60)
+
+echo $(expr $time_left - $todo)

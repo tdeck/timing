@@ -1,0 +1,5 @@
+#! /bin/bash
+mins=$(daylog | grep "$1" | cut -f 2 | sed 's/m//' | paste -sd+ - | bc)
+mins=$(expr $mins + 0)
+hours=$(echo "scale = 2; $mins / 60.0" | bc -l)
+echo "$mins minutes = $hours hours"

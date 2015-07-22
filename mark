@@ -1,0 +1,21 @@
+#! /bin/bash
+
+set -f
+ACTION="$@"
+
+LOG="$HOME/timing"
+
+TODAY=`gdate --rfc-3339 date`
+NOW=`date +%H:%M`
+
+DAY_HEADER="= $TODAY"
+
+# Append date header if needed
+if ! grep -Fxq "$DAY_HEADER" $LOG
+then
+    echo $DAY_HEADER >> $LOG
+fi
+
+echo "# $ACTION @ $NOW" >> $LOG
+
+tail $LOG
