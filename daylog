@@ -100,6 +100,13 @@ if ($flag eq '-d') {
     exit 0;
 }
 
+if ($flag eq '-c') {
+    my $total = 0; $total += $_ for values $logs[-1]->{'times'};
+    print "$total\n";
+
+    exit 0;
+}
+
 
 for (@logs) {
     print daylog($_);

@@ -1,0 +1,3 @@
+#! /bin/bash
+
+echo $(expr `daylog -c` \* 100 / $TIMING_GOAL_MIN)% done
