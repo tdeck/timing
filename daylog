@@ -23,7 +23,7 @@ my $task = '';
 my $start_hr = -1;
 my $start_min = 0;
 
-open INFILE, $ENV{"HOME"} . '/timing';
+open INFILE, $ENV{"TIMING_LOGFILE"};
 while (my $line = <INFILE>) {
     chomp $line;
     if ($line =~ /^#/) {

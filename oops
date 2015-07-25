@@ -1,8 +1,7 @@
 #! /bin/bash
 # Delete last line of timing file
-LOG="$HOME/timing"
 
-GONE=$(tail -n 1 $LOG)
-sed -i '' -e '$ d' $LOG
-tail $LOG
+GONE=$(tail -n 1 "$TIMING_LOGFILE")
+sed -i '' -e '$ d' "$TIMING_LOGFILE"
+tail $TIMING_LOGFILE
 echo "$GONE <<< REMOVED"

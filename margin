@@ -1,8 +1,11 @@
 #! /bin/bash
 
+# Use "gdate" on BSD and the ordinary date on Linux
+[[ `uname` -eq 'Linux' ]] && GDATE="date" || GDATE="gdate"
+
 unset GREP_OPTIONS
 completed=`daylog -c`
 todo=$(expr $TIMING_GOAL_MIN - $completed)
-time_left=$(expr $(($(gdate -d "today $TIMING_DAY_END" +%s) - $(gdate +%s))) / 60)
+time_left=$(expr $(($($GDATE -d "today $TIMING_DAY_END" +%s) - $($GDATE +%s))) / 60)
 
 echo $(expr $time_left - $todo)

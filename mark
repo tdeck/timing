@@ -3,19 +3,20 @@
 set -f
 ACTION="$@"
 
-LOG="$HOME/timing"
+# Use "gdate" on BSD and the ordinary date on Linux
+[[ `uname` -eq 'Linux' ]] && GDATE="date" || GDATE="gdate"
 
-TODAY=`gdate --rfc-3339 date`
+TODAY=`$GDATE --rfc-3339 date`
 NOW=`date +%H:%M`
 
 DAY_HEADER="= $TODAY"
 
 # Append date header if needed
-if ! grep -Fxq "$DAY_HEADER" $LOG
+if ! grep -Fxq "$DAY_HEADER" "$TIMING_LOGFILE"
 then
     echo $DAY_HEADER >> $LOG
 fi
 
-echo "# $ACTION @ $NOW" >> $LOG
+echo "# $ACTION @ $NOW" >> "$TIMING_LOGFILE"
 
-tail $LOG
+tail "$TIMING_LOGFILE"
