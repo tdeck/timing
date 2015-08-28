@@ -1,3 +1,6 @@
 #! /bin/bash
-#daylog | grep -i '^\d' | sed -E 's/([^ ]+) - ([0-9]+)m/\1 \2/' | barchart
-daylog | grep -i '^\d' | sed -E 's/([^ ]+) - ([0-9]+)m/\1 \2/' | while read d c; do echo $(date -jf '%Y-%m-%d' +%w $d | tr 0123456 UMTWRFS),$d $c; done | barchart
+
+# Use "gdate" on BSD and the ordinary date on Linux
+[[ `uname` -eq 'Linux' ]] && GDATE="date" || GDATE="gdate"
+
+daylog | grep -i '^[[:digit:]]' | sed -E 's/([^ ]+) - ([0-9]+)m/\1 \2/' | while read d c; do echo $($GDATE -d "$d" +'%w' | tr 0123456 UMTWRFS),$d $c; done | barchart
