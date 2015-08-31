@@ -1,6 +1,6 @@
 #! /bin/bash
 
-daylog | grep "\t[0-9]*m" | cut -d' ' -f 2- | sort -u | while read -r task
+daylog | grep $'\t[0-9]*m' | cut -d' ' -f 2- | sort -u | while read -r task
 do
     echo "$task:" $(howmuch "$task$" | sed 's/^.*= \(.*\) hours/\1/')
 done | sort -k2 -n -t: | barchart -d:
