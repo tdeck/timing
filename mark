@@ -4,7 +4,7 @@ set -f
 ACTION="$@"
 
 # Use "gdate" on BSD and the ordinary date on Linux
-[[ `uname` -eq 'Linux' ]] && GDATE="date" || GDATE="gdate"
+[[ `uname` == 'Linux' ]] && GDATE="date" || GDATE="gdate"
 
 TODAY=`$GDATE --rfc-3339 date`
 NOW=`date +%H:%M`
