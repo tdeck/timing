@@ -96,17 +96,27 @@ func recordInterval(startmin int, endmin int, bins *[48]int) {
 
 func printHeatmap(bins *[48]int) {
 	for i := range bins {
-		switch bins[i] / 5 {
-		case 0: // 0-5 minutes
+		if bins[i] == 0 {
 			fmt.Printf(" ")
-		case 1, 2: // 5-15 minutes
-			fmt.Printf(".")
-		case 3: // 15-20 minutes
-			fmt.Printf("x")
-		case 4, 5: // 20-30 minutes
-			fmt.Printf("X")
-		case 6: // All 30 minutes
-			fmt.Printf("#")
+			continue
+		}
+
+		switch bins[i] / 5 {
+		case 0:
+			fmt.Printf("▁")
+		case 1:
+			fmt.Printf("▂")
+		case 2:
+			fmt.Printf("▃")
+		// Note '▄' shows up oddly in the terminal
+		case 3:
+			fmt.Printf("▅")
+		case 4:
+			fmt.Printf("▆")
+		case 5:
+			fmt.Printf("▇")
+		case 6:
+			fmt.Printf("█")
 		}
 	}
 	fmt.Printf("\n")
