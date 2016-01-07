@@ -74,6 +74,10 @@ func main() {
 			}
 		}
 	}
+
+	// Show today's partial heatmap
+	fmt.Printf("%s: ", date)
+	printHeatmap(&bins)
 }
 
 func recordInterval(startmin int, endmin int, bins *[48]int) {
