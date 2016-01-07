@@ -116,7 +116,7 @@ func printHeatmap(bins *[48]int) {
 		case 5:
 			fmt.Printf("▇")
 		case 6:
-			fmt.Printf("█")
+			fmt.Printf("▉")
 		}
 	}
 	fmt.Printf("\n")
