@@ -82,15 +82,19 @@ func main() {
 
 func recordInterval(startmin int, endmin int, bins *[48]int) {
 	mins := endmin - startmin
-	for b := startmin / 30; mins > 0; b++ {
-		space := 30 - bins[b]
-		added := space
-		if mins < space {
-			added = mins
+	startbin := startmin / 30
+
+	for b := startbin; mins > 0; b++ {
+		inbin := 30
+		if b == startbin {
+			inbin = 30 - (startmin % 30) //  minutes left in bin
+		}
+		if mins < inbin {
+			inbin = mins
 		}
 
-		mins -= added
-		bins[b] += added
+		mins -= inbin
+		bins[b] += inbin
 
 		if bins[b] > 30 {
 			log.Panicln("Overlapping interval")
