@@ -54,6 +54,7 @@ func main() {
 				bins[i] = 0
 			}
 			date = line[2:]
+            startmin = -1
 		default:
 			match := actionRegex.FindStringSubmatch(line)
 			hour, _ := strconv.Atoi(match[1])
