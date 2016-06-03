@@ -17,6 +17,6 @@ then
     echo $DAY_HEADER >> "$TIMING_LOGFILE"
 fi
 
-echo $NOW $ACTION >> "$TIMING_LOGFILE"
+echo $NOW ${ACTION:-c} >> "$TIMING_LOGFILE"
 
 tail "$TIMING_LOGFILE"
