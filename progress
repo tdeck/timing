@@ -1,3 +1,12 @@
 #! /bin/bash
 
-echo $(expr `daylog -c` \* 100 / $TIMING_GOAL_MIN)% done
+# Use "gdate" on BSD and the ordinary date on Linux
+[[ `uname` == 'Linux' ]] && GDATE="date" || GDATE="gdate"
+
+day_start_s=$($GDATE -d "today $TIMING_DAY_START" +%s)
+day_end_s=$($GDATE -d "today $TIMING_DAY_END" +%s)
+now_s=$($GDATE +%s)
+((pct_day_over=($now_s - $day_start_s) * 100 / ($day_end_s - $day_start_s)))
+
+echo $(expr `daylog -c` \* 100 / $TIMING_GOAL_MIN)% work
+echo $pct_day_over% day
