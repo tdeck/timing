@@ -1,0 +1,28 @@
+#! /usr/bin/env perl
+# Prints a zero-based rank for the current day vs. other days of work.
+
+my @days = @{ eval `daylog -d` };
+
+my $today = pop @days;
+my $today_mins = sum(values $today->{'times'});
+
+my $count_more = 0;
+
+for my $day (@days) {
+    my $mins = sum(values $day->{'times'});
+
+    if ($mins > $today_mins) {
+        $count_more ++;
+    }
+}
+
+print "$count_more\n";
+
+sub sum {
+    my $res = 0;
+    for (@_) {
+        $res += $_;
+    }
+
+    return $res;
+}
