@@ -55,10 +55,10 @@ while (my $line = <INFILE>) {
                     $times->{$task} = 0;
                 }
 
-                $times->{$task} += 
-                    ($hour * 60 + $min) - 
+                $times->{$task} +=
+                    ($hour * 60 + $min) -
                     ($start_hr * 60 + $start_min);
-                
+
                 if ($action eq 'd') {
                     $finished->{$task} = 1;
                 }
