@@ -1,0 +1,29 @@
+#! /bin/bash
+# Computes a "time debt" in minutes, which is the sum of all shortfalls on days
+# where less than TIMING_GOAL_MIN work was done, minus any extra work done on
+# days *after* the debt was incurred. The idea is that when this is zero, the
+# average work per day should be >= TIMING_GOAL_MIN.
+
+debt=0
+
+declare -a times
+readarray -t times <<< \
+  "$(daylog \
+      | grep "$1" -A100000 \
+      | grep ' - ' \
+      | cut -d' ' -f 3 \
+      | sed 's/m//')"
+
+for time in "${times[@]}"
+do
+  extra=$(expr $time - $TIMING_GOAL_MIN)
+
+  ((debt-=extra))
+
+  if [[ $debt -lt 0 ]]
+  then
+    debt=0
+  fi
+done
+
+echo ${debt}m
