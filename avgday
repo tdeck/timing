@@ -1,0 +1,23 @@
+#! /usr/bin/env perl
+# Prints the average minutes worked, considering all days worked
+
+my @days = @{ eval `daylog -d` };
+
+my $total = 0;
+
+for my $day (@days) {
+    my $mins = sum(values $day->{'times'});
+
+    $total += $mins;
+}
+
+print int($total/@days) . "\n";
+
+sub sum {
+    my $res = 0;
+    for (@_) {
+        $res += $_;
+    }
+
+    return $res;
+}
