@@ -101,7 +101,7 @@ if ($flag eq '-d') {
 }
 
 if ($flag eq '-c') {
-    my $total = 0; $total += $_ for values $logs[-1]->{'times'};
+    my $total = 0; $total += $_ for values %{$logs[-1]->{'times'}};
     print "$total\n";
 
     exit 0;
