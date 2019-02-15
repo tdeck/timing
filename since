@@ -1,0 +1,23 @@
+#! /bin/bash
+
+DATE="$1"
+shift
+
+TMPFILE="$(mktemp)"
+
+print=n
+while read -r line; do
+    if [[ "$line" = "= "* && ! "$line" < "= $DATE" ]]; then
+      print=y
+    fi
+
+    if [[ $print == y ]]; then
+      echo "$line" >> "$TMPFILE"
+    fi
+done < "$TIMING_LOGFILE"
+
+export TIMING_LOGFILE="$TMPFILE"
+
+"$@"
+
+rm "$TMPFILE"
