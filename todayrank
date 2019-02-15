@@ -4,12 +4,12 @@
 my @days = @{ eval `daylog -d` };
 
 my $today = pop @days;
-my $today_mins = sum(values $today->{'times'});
+my $today_mins = sum(values %{$today->{'times'}});
 
 my $count_more = 0;
 
 for my $day (@days) {
-    my $mins = sum(values $day->{'times'});
+    my $mins = sum(values %{$day->{'times'}});
 
     if ($mins > $today_mins) {
         $count_more ++;

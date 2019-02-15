@@ -6,7 +6,7 @@ my @days = @{ eval `daylog -d` };
 my $total = 0;
 
 for my $day (@days) {
-    my $mins = sum(values $day->{'times'});
+    my $mins = sum(values %{$day->{'times'}});
 
     $total += $mins;
 }

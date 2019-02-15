@@ -3,4 +3,7 @@
 unset GREP_OPTIONS
 completed=`daylog -c`
 todo=$(expr $TIMING_GOAL_MIN - $completed)
-date -r $(expr $(date +%s) \+ 60 \* $todo) +'%H:%M'
+# Mac version:
+#date -r $(expr $(date +%s) \+ 60 \* $todo) +'%H:%M'
+# Linux version:
+date -d @$(expr $(date +%s) \+ 60 \* $todo) +'%H:%M'
